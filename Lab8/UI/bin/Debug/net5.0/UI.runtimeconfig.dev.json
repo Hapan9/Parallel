@@ -1,0 +1,8 @@
+{
+  "runtimeOptions": {
+    "additionalProbingPaths": [
+      "C:\\Users\\Hapan9\\.dotnet\\store\\|arch|\\|tfm|",
+      "C:\\Users\\Hapan9\\.nuget\\packages"
+    ]
+  }
+}

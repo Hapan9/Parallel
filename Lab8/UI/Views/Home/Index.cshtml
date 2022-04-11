@@ -1,0 +1,144 @@
+﻿<script>
+    function drawDefaultMatrix(sendPost) {
+        var firstArray = generateIntArray(document.getElementById("rawInt").value, document.getElementById("columnInt").value);
+        var secondArray = generateIntArray(document.getElementById("rawInt").value, document.getElementById("columnInt").value);
+
+        if (sendPost) {
+            sendPostRequest(JSON.stringify([firstArray, secondArray]));
+        }
+
+        drawMatrix("matrix1", firstArray);
+        drawMatrix("matrix2", secondArray);
+    }
+
+    function drawMatrix(elementName, intArray) {
+        var table = document.createElement("table");
+        var i;
+        for (i = 0; i < intArray.length; i++){
+            var tr = document.createElement("tr");
+            for (var j = 0; j < intArray[i].length; j++) {
+                var td = document.createElement("td");
+                td.innerHTML = intArray[i][j];
+                tr.appendChild(td);
+            }
+            table.appendChild(tr);
+        }
+        table.setAttribute("border", 1)
+        document.getElementById(elementName).innerHTML = "";
+        document.getElementById(elementName).appendChild(table);
+    }
+
+    function generateIntArray(row, column) {
+        var array = [];
+        for (var i = 0; i < row; i++) {
+            array[i] = [];
+            for (var j = 0; j < column; j++) {
+                array[i][j] = Math.floor(Math.random() * 3 + 1);
+            }
+        }
+        return array;
+    }
+
+    function sendPostRequest(json) {
+        var xhr = new XMLHttpRequest();
+        var url = "https://localhost:44379/api/Calculation/";
+        xhr.open("POST", url, true);
+        xhr.setRequestHeader("Content-Type", "application/json");
+        xhr.onreadystatechange = function () {
+            if (xhr.readyState === 4 && xhr.status === 200) {
+                var result = JSON.parse(xhr.responseText);
+                drawMatrix("matrix3", result.finalMatrix);
+                document.getElementById("operationTime").innerHTML = result.time;
+                document.getElementById("operationTime").focus();
+            }
+        };
+        xhr.send(json);
+    }
+
+    function sendGetRequest() {
+        var xhr = new XMLHttpRequest();
+        var url = 'https://localhost:44379/api/Calculation/' + document.getElementById("rawInt").value + '/' + document.getElementById("columnInt").value;
+        xhr.open("GET", url, true);
+        xhr.setRequestHeader("Content-Type", "application/json");
+        xhr.onreadystatechange = function () {
+            if (xhr.readyState === 4 && xhr.status === 200) {
+                var result = JSON.parse(xhr.responseText);
+                drawMatrix("matrix1", result.firstMatrix);
+                drawMatrix("matrix2", result.secondMatrix);
+                drawMatrix("matrix3", result.finalMatrix);
+                document.getElementById("operationTime").innerHTML = result.time;
+                document.getElementById("operationTime").focus();
+            }
+        };
+        xhr.send();
+    }
+</script>
+
+<style>
+    table {
+        text-align: center;
+        font-size: 33px;
+        border-collapse: collapse;
+        margin: 2px;
+        align-items: center;
+    }
+
+    td {
+        min-width: 3px;
+        min-height: 3px;
+    }
+    th {
+        min-width: 35px;
+        min-height: 35px;
+        font-size: 35px;
+        margin: 10px;
+    }
+</style>
+
+
+<table style="margin: auto" border="2">
+    <thead>
+        <tr>
+            <th>Matrix A</th>
+            <th>Matrix B</th>
+        </tr>
+    </thead>
+    <tr>
+        <td>
+            <div id="matrix1"></div>
+        </td>
+        <td>
+            <div id="matrix2"></div>
+        </td>
+    </tr>
+    <tr>
+        <th colspan="2">
+            A * B
+        </th>
+    </tr>
+    <tr>
+        <td colspan="2" style="margin: auto;">
+            <div id="matrix3"></div>
+            <div id="operationTime" style="font-size: 35px;"></div>
+        </td>
+    </tr>
+    <tr>
+    <tr>
+        <td colspan="2">
+            <table style="margin-left: auto; margin-right: auto;">
+                <tr><th>Raw</th><td><input id="rawInt" type="number" value="5" /></td></tr>
+                <tr><th>Column</th><td><input id="columnInt" type="number" value="5" /></td></tr>
+                <tr>
+                    <th colspan="2">
+                        <input onclick="drawDefaultMatrix(false)" type="submit" value="Генерація матриць" />
+                    </th>
+                </tr>
+            </table>
+        </td>
+    </tr>
+    <tr>
+        <td style="margin: auto"><input value="Відправити значення" type="submit" onclick="drawDefaultMatrix(true)" /></td>
+        <td style="margin: auto"><input value="Без значень" type="submit" onclick="sendGetRequest()" /></td>
+    </tr>
+</table>
+

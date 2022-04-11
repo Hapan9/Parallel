@@ -1,0 +1,12 @@
+C:\Users\Hapan9\Documents\GitHub\Parallel\Lab8\BLL\bin\Debug\net5.0\BLL.deps.json
+C:\Users\Hapan9\Documents\GitHub\Parallel\Lab8\BLL\bin\Debug\net5.0\BLL.dll
+C:\Users\Hapan9\Documents\GitHub\Parallel\Lab8\BLL\bin\Debug\net5.0\ref\BLL.dll
+C:\Users\Hapan9\Documents\GitHub\Parallel\Lab8\BLL\bin\Debug\net5.0\BLL.pdb
+C:\Users\Hapan9\Documents\GitHub\Parallel\Lab8\BLL\obj\Debug\net5.0\BLL.csproj.AssemblyReference.cache
+C:\Users\Hapan9\Documents\GitHub\Parallel\Lab8\BLL\obj\Debug\net5.0\BLL.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\Hapan9\Documents\GitHub\Parallel\Lab8\BLL\obj\Debug\net5.0\BLL.AssemblyInfoInputs.cache
+C:\Users\Hapan9\Documents\GitHub\Parallel\Lab8\BLL\obj\Debug\net5.0\BLL.AssemblyInfo.cs
+C:\Users\Hapan9\Documents\GitHub\Parallel\Lab8\BLL\obj\Debug\net5.0\BLL.csproj.CoreCompileInputs.cache
+C:\Users\Hapan9\Documents\GitHub\Parallel\Lab8\BLL\obj\Debug\net5.0\BLL.dll
+C:\Users\Hapan9\Documents\GitHub\Parallel\Lab8\BLL\obj\Debug\net5.0\ref\BLL.dll
+C:\Users\Hapan9\Documents\GitHub\Parallel\Lab8\BLL\obj\Debug\net5.0\BLL.pdb
