@@ -1,32 +1,37 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\Hapan9\\Desktop\\java\\Lab7\\Lab7\\Lab7.csproj": {}
+    "C:\\Users\\Acer\\Desktop\\java\\Lab7\\Lab7\\Lab7.csproj": {}
   },
   "projects": {
-    "C:\\Users\\Hapan9\\Desktop\\java\\Lab7\\Lab7\\Lab7.csproj": {
+    "C:\\Users\\Acer\\Desktop\\java\\Lab7\\Lab7\\Lab7.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Hapan9\\Desktop\\java\\Lab7\\Lab7\\Lab7.csproj",
+        "projectUniqueName": "C:\\Users\\Acer\\Desktop\\java\\Lab7\\Lab7\\Lab7.csproj",
         "projectName": "Lab7",
-        "projectPath": "C:\\Users\\Hapan9\\Desktop\\java\\Lab7\\Lab7\\Lab7.csproj",
-        "packagesPath": "C:\\Users\\Hapan9\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Hapan9\\Desktop\\java\\Lab7\\Lab7\\obj\\",
+        "projectPath": "C:\\Users\\Acer\\Desktop\\java\\Lab7\\Lab7\\Lab7.csproj",
+        "packagesPath": "C:\\Users\\Acer\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\Acer\\Desktop\\java\\Lab7\\Lab7\\obj\\",
         "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
+        ],
         "configFilePaths": [
-          "C:\\Users\\Hapan9\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\Acer\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\DevExpress 20.1.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
-          "net5.0"
+          "net6.0"
         ],
         "sources": {
           "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "D:\\DevExpress\\Components\\System\\Components\\Packages": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
-          "net5.0": {
-            "targetAlias": "net5.0",
+          "net6.0": {
+            "targetAlias": "net6.0",
             "projectReferences": {}
           }
         },
@@ -37,8 +42,8 @@
         }
       },
       "frameworks": {
-        "net5.0": {
-          "targetAlias": "net5.0",
+        "net6.0": {
+          "targetAlias": "net6.0",
           "dependencies": {
             "MPI.NET": {
               "target": "Package",
@@ -60,7 +65,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.406\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.101\\RuntimeIdentifierGraph.json"
         }
       }
     }

@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "I3M/K62EJmKRLQlLfJBnTKI13JCUqSJzJvEXRIhkP7HT9OYDYSYvVKp65kNDldA5ORoBPmpLz66DW6hoyyOPIg==",
+  "dgSpecHash": "SFMp9GJX8Is2F+/sIWa6UZqDezuKLLgcMGow+gtfeVZRrBpRE/KGOf4ZssJWPM38YfltkLqeAhlMUiaAxROegw==",
   "success": true,
-  "projectFilePath": "C:\\Users\\Hapan9\\Desktop\\java\\Lab6\\Lab6\\Lab6.csproj",
+  "projectFilePath": "C:\\Users\\Hapan9\\Documents\\GitHub\\Parallel\\Lab6\\Lab6\\Lab6.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\Hapan9\\.nuget\\packages\\microsoft.netcore.platforms\\1.1.0\\microsoft.netcore.platforms.1.1.0.nupkg.sha512",
     "C:\\Users\\Hapan9\\.nuget\\packages\\microsoft.netcore.targets\\1.1.0\\microsoft.netcore.targets.1.1.0.nupkg.sha512",

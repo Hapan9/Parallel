@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\Hapan9\\Desktop\\java\\Lab6\\Lab6\\Lab6.csproj": {}
+    "C:\\Users\\Hapan9\\Documents\\GitHub\\Parallel\\Lab6\\Lab6\\Lab6.csproj": {}
   },
   "projects": {
-    "C:\\Users\\Hapan9\\Desktop\\java\\Lab6\\Lab6\\Lab6.csproj": {
+    "C:\\Users\\Hapan9\\Documents\\GitHub\\Parallel\\Lab6\\Lab6\\Lab6.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Hapan9\\Desktop\\java\\Lab6\\Lab6\\Lab6.csproj",
+        "projectUniqueName": "C:\\Users\\Hapan9\\Documents\\GitHub\\Parallel\\Lab6\\Lab6\\Lab6.csproj",
         "projectName": "Lab6",
-        "projectPath": "C:\\Users\\Hapan9\\Desktop\\java\\Lab6\\Lab6\\Lab6.csproj",
+        "projectPath": "C:\\Users\\Hapan9\\Documents\\GitHub\\Parallel\\Lab6\\Lab6\\Lab6.csproj",
         "packagesPath": "C:\\Users\\Hapan9\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Hapan9\\Desktop\\java\\Lab6\\Lab6\\obj\\",
+        "outputPath": "C:\\Users\\Hapan9\\Documents\\GitHub\\Parallel\\Lab6\\Lab6\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\Hapan9\\AppData\\Roaming\\NuGet\\NuGet.Config",
@@ -60,7 +60,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.406\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.407\\RuntimeIdentifierGraph.json"
         }
       }
     }
