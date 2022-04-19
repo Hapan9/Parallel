@@ -1,27 +1,27 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
+using Environment = MPI.Environment;
 
 namespace Lab7
 {
-    class Program
+    internal class Program
     {
-        const int Master = 0;
-        
-        static void Main(string[] args)
+        private const int Master = 0;
+
+        private static void Main(string[] args)
         {
             OneToMany(args);
         }
 
         private static void ManyToMany(string[] args)
         {
-            MPI.Environment.Run(ref args, comm =>
+            var args1 = args;
+            Environment.Run(ref args, comm =>
             {
-                int[][] first = null, second = null, result = null, expected = null, firstBlock, secondBlock;
                 long initializationTime = 0;
                 Stopwatch stopwatch = null;
-                var rank = Convert.ToInt32(args[0]);
+                var rank = Convert.ToInt32(args1[0]);
 
                 if (rank % comm.Size != 0)
                     throw new ArgumentException("Workers count is not valid for matrix size");
@@ -34,40 +34,44 @@ namespace Lab7
                     stopwatch.Start();
                 }
 
-                secondBlock = createMatrix(rowsPerNode, rank);
-                firstBlock = createMatrix(rowsPerNode, rank);
+                var secondBlock = CreateMatrix(rowsPerNode, rank);
+                var firstBlock = CreateMatrix(rowsPerNode, rank);
 
                 if (comm.Rank == Master)
                 {
-                    stopwatch.Stop();
-                    initializationTime = stopwatch.ElapsedMilliseconds;
-                    Console.WriteLine("Initialization time elapsed - " + initializationTime);
-                    stopwatch.Restart();
+                    if (stopwatch != null)
+                    {
+                        stopwatch.Stop();
+                        initializationTime = stopwatch.ElapsedMilliseconds;
+                        Console.WriteLine("Initialization time elapsed - " + initializationTime);
+                        stopwatch.Restart();
+                    }
                 }
 
-                second = comm.AllgatherFlattened(secondBlock, secondBlock.Length);
+                var second = comm.AllgatherFlattened(secondBlock, secondBlock.Length);
 
-                var resultBlock = multiply(firstBlock, second);
+                var resultBlock = Multiply(firstBlock, second);
 
-                result = comm.GatherFlattened(resultBlock, Master);
+                comm.GatherFlattened(resultBlock, Master);
 
-                if (comm.Rank == Master)
-                {
-                    stopwatch.Stop();
-                    Console.WriteLine("Multiplication time elapsed - " + stopwatch.ElapsedMilliseconds);
-                    Console.WriteLine("Time elapsed - " + (initializationTime + stopwatch.ElapsedMilliseconds));
-                }
+                if (comm.Rank != Master) return;
+                if (stopwatch == null) return;
+
+                stopwatch.Stop();
+                Console.WriteLine("Multiplication time elapsed - " + stopwatch.ElapsedMilliseconds);
+                Console.WriteLine("Time elapsed - " + (initializationTime + stopwatch.ElapsedMilliseconds));
             });
         }
 
         private static void OneToMany(string[] args)
         {
-            MPI.Environment.Run(ref args, comm =>
+            var args1 = args;
+            Environment.Run(ref args, comm =>
             {
-                int[][] first = null, second = null, result = null, expected = null, block;
+                int[][] first = null, second = null;
                 long initializationTime = 0;
                 Stopwatch stopwatch = null;
-                var rank = Convert.ToInt32(args[0]);
+                var rank = Convert.ToInt32(args1[0]);
 
                 if (rank % comm.Size != 0)
                     throw new ArgumentException("Workers count is not valid for matrix size");
@@ -77,9 +81,9 @@ namespace Lab7
                     stopwatch = new Stopwatch();
                     stopwatch.Start();
 
-                    first = createMatrix(rank);
-                    second = createMatrix(rank);
-                    
+                    first = CreateMatrix(rank);
+                    second = CreateMatrix(rank);
+
                     stopwatch.Stop();
                     initializationTime = stopwatch.ElapsedMilliseconds;
                     Console.WriteLine("Initialization time elapsed - " + initializationTime);
@@ -88,35 +92,37 @@ namespace Lab7
 
                 var rowsPerNode = rank / comm.Size;
 
-                block = comm.ScatterFromFlattened(first, rowsPerNode, Master);
+                var block = comm.ScatterFromFlattened(first, rowsPerNode, Master);
                 comm.Broadcast(ref second, Master);
 
-                var resultBlock = multiply(block, second);
+                var resultBlock = Multiply(block, second);
 
-                result = comm.GatherFlattened(resultBlock, Master);
+                comm.GatherFlattened(resultBlock, Master);
 
-                if (comm.Rank == Master)
-                {
-                    stopwatch.Stop();
-                    Console.WriteLine("Multiplication time elapsed - " + stopwatch.ElapsedMilliseconds);
-                    Console.WriteLine("Time elapsed - " + (initializationTime + stopwatch.ElapsedMilliseconds));
-                }
+                if (comm.Rank != Master) return;
+                if (stopwatch == null) return;
+
+                stopwatch.Stop();
+                Console.WriteLine("Multiplication time elapsed - " + stopwatch.ElapsedMilliseconds);
+                Console.WriteLine("Time elapsed - " + (initializationTime + stopwatch.ElapsedMilliseconds));
             });
         }
 
         private static string[] Test(string[] args)
         {
-            MPI.Environment.Run(ref args, comm =>
+            var args1 = args;
+            Environment.Run(ref args, comm =>
             {
                 if (comm.Size < 2)
                 {
                     throw new Exception("Need at least two MPI tasks. Quitting...");
                 }
-                else if (comm.Rank == Master)
+
+                if (comm.Rank == Master)
                 {
-                    var rank = Convert.ToInt32(args[0]);
-                    var first = createMatrix(rank);
-                    var second = createMatrix(rank);
+                    var rank = Convert.ToInt32(args1[0]);
+                    var first = CreateMatrix(rank);
+                    var second = CreateMatrix(rank);
                     int[][] result = null;
 
                     comm.Scatter(first, Master);
@@ -127,7 +133,7 @@ namespace Lab7
                 }
                 else
                 {
-                    int[] row = comm.Scatter(new int[0][], Master);
+                    var row = comm.Scatter(new int[0][], Master);
 
                     if (row == null)
                         Console.WriteLine($"Rank {comm.Rank}: First matrix rows not received");
@@ -138,98 +144,74 @@ namespace Lab7
                     if (second == null)
                         Console.WriteLine($"Rank {comm.Rank}: Second matrix not received");
 
-                    Console.WriteLine($"Rank {comm.Rank}: {string.Join(", ", row)}; {second.Length}");
+                    if (second != null)
+                        Console.WriteLine(
+                            $"Rank {comm.Rank}: {string.Join(", ", row ?? throw new InvalidOperationException())}; {second.Length}");
                 }
             });
             return args;
         }
 
-        private static void printMatrix(int[][] matrix)
+        private static void PrintMatrix(int[][] matrix)
         {
-            for (int i = 0; i < matrix.Length; i++)
+            foreach (var elem in matrix)
             {
-                for (int j = 0; j < matrix[0].Length; j++)
-                {
-                    Console.Write(matrix[i][j] + " ");
-                }
+                for (var j = 0; j < matrix[0].Length; j++) Console.Write(elem[j] + " ");
                 Console.WriteLine();
             }
         }
 
-        private static int[][] createMatrix(int rank)
+        private static int[][] CreateMatrix(int rank)
         {
-            int[][] matrix = createEmptyMatrix(rank);
-            for (int i = 0; i < rank; i++)
-            {
-                for (int j = 0; j < rank; j++)
-                {
-                    matrix[i][j] = new Random().Next(100);
-                }
-            }
+            var matrix = CreateEmptyMatrix(rank);
+            for (var i = 0; i < rank; i++)
+            for (var j = 0; j < rank; j++)
+                matrix[i][j] = new Random().Next(100);
             return matrix;
         }
 
-        private static int[][] createMatrix(int rows, int columns)
+        private static int[][] CreateMatrix(int rows, int columns)
         {
-            int[][] matrix = createEmptyMatrix(rows, columns);
-            for (int i = 0; i < rows; i++)
-            {
-                for (int j = 0; j < columns; j++)
-                {
-                    matrix[i][j] = new Random().Next(100);
-                }
-            }
+            var matrix = CreateEmptyMatrix(rows, columns);
+            for (var i = 0; i < rows; i++)
+            for (var j = 0; j < columns; j++)
+                matrix[i][j] = new Random().Next(100);
             return matrix;
         }
 
-        private static int[][] createEmptyMatrix(int rank)
+        private static int[][] CreateEmptyMatrix(int rank)
         {
-            int[][] matrix = new int[rank][];
-            for (int i = 0; i < rank; i++)
-            {
-                matrix[i] = new int[rank];
-            }
+            var matrix = new int[rank][];
+            for (var i = 0; i < rank; i++) matrix[i] = new int[rank];
             return matrix;
         }
 
-        private static int[][] createEmptyMatrix(int rows, int columns)
+        private static int[][] CreateEmptyMatrix(int rows, int columns)
         {
-            int[][] matrix = new int[rows][];
-            for (int i = 0; i < rows; i++)
-            {
-                matrix[i] = new int[columns];
-            }
+            var matrix = new int[rows][];
+            for (var i = 0; i < rows; i++) matrix[i] = new int[columns];
             return matrix;
         }
 
-        private static bool matricesEqual(int[][] expected, int[][] actual)
+        private static bool MatricesEqual(IReadOnlyList<int[]> expected, IReadOnlyList<int[]> actual)
         {
-            for (int i = 0; i < expected.Length; i++)
-            {
-                for (int j = 0; j < expected[0].Length; j++)
-                {
-                    if (expected[i][j] != actual[i][j])
-                    {
-                        return false;
-                    }
-                }
-            }
+            for (var i = 0; i < expected.Count; i++)
+            for (var j = 0; j < expected[0].Length; j++)
+                if (expected[i][j] != actual[i][j])
+                    return false;
             return true;
         }
-        public static int[][] multiply(int[][] first, int[][] second)
+
+        public static int[][] Multiply(int[][] first, int[][] second)
         {
-            int[][] matrix = createEmptyMatrix(first.Length, second[0].Length);
-            for (int i = 0; i < matrix.Length; i++)
+            var matrix = CreateEmptyMatrix(first.Length, second[0].Length);
+            for (var i = 0; i < matrix.Length; i++)
+            for (var j = 0; j < matrix[0].Length; j++)
             {
-                for (int j = 0; j < matrix[0].Length; j++)
-                {
-                    matrix[i][j] = 0;
-                    for (int k = 0; k < second.Length; k++)
-                    {
-                        matrix[i][j] += first[i][k] * second[k][j];
-                    }
-                }
+                matrix[i][j] = 0;
+                for (var k = 0; k < second.Length; k++) matrix[i][j] += first[i][k] * second[k][j];
             }
+
             return matrix;
         }
     }
