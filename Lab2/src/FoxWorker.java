@@ -27,7 +27,7 @@ public class FoxWorker implements Runnable {
     public void run(){
         int[][] firstBlock = getBlock(first, firstBlockRow, firstBlockColumn);
         int[][] secondBlock = getBlock(second, secondBlockRow, secondBlockColumn);
-
+        
         int[][] resultBlock = InlineStrategy.multiply(firstBlock, secondBlock).getMatrix();
         applyBlockToResult(resultBlock);
 
@@ -50,15 +50,6 @@ public class FoxWorker implements Runnable {
             for (int j = 0; j < blockRank; j++) {
                 result[firstBlockRow * blockRank + i][secondBlockColumn * blockRank + j] += block[i][j];
             }
-        }
-    }
-
-    private static synchronized void print(int[][] matrix){
-        System.out.println();
-        for(int i =0; i < matrix.length; i ++){
-            for (int j = 0; j < matrix[0].length; j++){
-            }
-            System.out.println();
         }
     }
 }

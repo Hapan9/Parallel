@@ -9,6 +9,8 @@ public class TapeStrategy implements MultiplicationStrategy {
     private Collection<TapeWorker> workers;
     private Result result;
 
+    //private ExecutorService executor;
+
     private final int[][] first;
     private final int[][] second;
 
@@ -23,9 +25,7 @@ public class TapeStrategy implements MultiplicationStrategy {
 
     private void prepareWorkers(){
         for (int i = 0; i < result.getMatrix().length; i++) {
-            for(int j = 0; j < result.getMatrix()[0].length; j++){
-                workers.add(new TapeWorker(i, j, first, second, result.getMatrix()));
-            }
+            workers.add(new TapeWorker(i, i, first, second, result.getMatrix()));
         }
     }
 

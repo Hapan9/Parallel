@@ -1,14 +1,16 @@
-
-
 public class Program {
-    static IterationsManager manager = new IterationsManager();
 
     public static void main(String[] args) {
-        int[] workersTests = { 16 };
-        for (int i = 0; i < workersTests.length; i++) {
-            runWorkersTest(workersTests[i]);
-        }
+        int[] workersTests = {2, 4, 8, 16, 32};
+        int[] sizeTests = { 100, 200, 20, 50 };
 
+        //for (int i = 0; i < workersTests.length; i++) {
+        //    runWorkersTest(workersTests[i]);
+        //}
+
+        for (int i = 0; i < sizeTests.length; i++) {
+            runSizeTest(sizeTests[i]);
+        }
     }
 
     private static void runWorkersTest(int workersCount){
@@ -22,16 +24,38 @@ public class Program {
 
         System.out.print("Fox method (100): ");
         start = System.currentTimeMillis();
-        manager.iterate(fox);
+        IterationsManager.iterate(fox);
         System.out.println(System.currentTimeMillis() - start);
 
         System.out.print("Tape method: ");
         start = System.currentTimeMillis();
-        manager.iterate(tape);
+        IterationsManager.iterate(tape);
         System.out.println(System.currentTimeMillis() - start);
 
         System.out.println();
-        printLastRow(fox.getResult().getMatrix());
+        //printLastRow(tape.getResult().getMatrix());
+    }
+
+    private static void runSizeTest(int matrixRank){
+        System.out.println("Size test: " + matrixRank + " matrix rank");
+        int[][] firstMatrix = createMatrix(matrixRank, matrixRank);
+        int[][] secondMatrix = createMatrix(matrixRank, matrixRank);
+        TapeStrategy tape = new TapeStrategy(firstMatrix, secondMatrix, 2);
+        FoxStrategy fox = new FoxStrategy(firstMatrix, secondMatrix, 2, 10);
+
+        long start;
+
+        System.out.print("Fox method: ");
+        start = System.currentTimeMillis();
+        IterationsManager.iterate(fox);
+        System.out.println(System.currentTimeMillis() - start);
+
+        System.out.print("Tape method: ");
+        start = System.currentTimeMillis();
+        IterationsManager.iterate(tape);
+        System.out.println(System.currentTimeMillis() - start);
+
+        System.out.println();
     }
 
     private static int[][] createMatrix(int rows, int columns){

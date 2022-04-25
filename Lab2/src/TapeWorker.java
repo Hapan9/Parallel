@@ -17,6 +17,7 @@ public class TapeWorker implements Runnable {
     @Override
     public void run(){
         result[row][column] = multiplyRowAndColumn(row, column);
+        column = (column + 1) % result[0].length;
     }
 
     private int multiplyRowAndColumn(int row, int column){

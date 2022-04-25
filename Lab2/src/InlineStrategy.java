@@ -1,5 +1,5 @@
 public class InlineStrategy {
-    public static synchronized Result multiply(int[][] first, int[][] second){
+    public static Result multiply(int[][] first, int[][] second){
         int[][] matrix = new int[first.length][second[0].length];
         for (int i = 0; i < matrix.length; i++) {
             for (int j = 0; j < matrix[0].length; j++) {
