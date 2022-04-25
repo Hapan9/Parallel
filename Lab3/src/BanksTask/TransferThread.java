@@ -11,6 +11,8 @@ public class TransferThread extends Thread {
         fromAccount = from;
         maxAmount = max;
     }
+
+    @Override
     public void run(){
         try{
             while (!interrupted()){

@@ -5,14 +5,14 @@ import java.util.LinkedList;
 public class JournalTaskStarter {
     public static void startTask(){
         Journal journal = new Journal();
-        int nWeeks = 2;
+        int nWeeks = 3;
 
         var threads = new LinkedList<Thread>();
 
-        threads.add(new Thread(new Teacher("Lecturer 1", nWeeks, journal)));
-        threads.add(new Thread(new Teacher("Assistant 1", nWeeks, journal)));
-        threads.add(new Thread(new Teacher("Assistant 2", nWeeks, journal)));
-        threads.add(new Thread(new Teacher("Assistant 3", nWeeks, journal)));
+        threads.add(new Thread(new Teacher("L1", nWeeks, journal)));
+        threads.add(new Thread(new Teacher("As1", nWeeks, journal)));
+        threads.add(new Thread(new Teacher("As2", nWeeks, journal)));
+        threads.add(new Thread(new Teacher("As3", nWeeks, journal)));
 
         threads.forEach(Thread::start);
         threads.forEach(thread -> {

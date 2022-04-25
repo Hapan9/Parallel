@@ -18,7 +18,7 @@ public class Producer implements Runnable {
              i++) {
             drop.put(String.valueOf(importantInfo[i]));
             try {
-                Thread.sleep(random.nextInt(100));
+                Thread.sleep(random.nextInt(5));
             } catch (InterruptedException e) {}
         }
         drop.put("DONE");

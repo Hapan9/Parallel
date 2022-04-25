@@ -7,9 +7,9 @@ public class Journal {
     public ConcurrentHashMap<String, Group> groups = new ConcurrentHashMap<>();
 
     public Journal() {
-        Group group1 = new Group("81", 29);
-        Group group2 = new Group("82", 30);
-        Group group3 = new Group("83", 28);
+        Group group1 = new Group("IТ", 15);
+        Group group2 = new Group("IП", 15);
+        Group group3 = new Group("КТ", 15);
 
         this.groups.put(group1.getGroupName(), group1);
         this.groups.put(group2.getGroupName(), group2);
