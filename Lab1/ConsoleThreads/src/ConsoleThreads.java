@@ -2,11 +2,16 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 public class ConsoleThreads {
     public static void main(String[] args) throws InterruptedException {
-        counter();
+        counter(new SimpleCounter());
+        //counter(new LockCounter());
+        //counter(new SynchronizedCounter());
+        //counter(new SynchronizedObjectCounter());
+        //counter(new SimpleCounter());
+        //counter(new AtomicIntCounter());
+        characters();
     }
 
-    private static void counter() throws InterruptedException {
-        var counter = new AtomicIntCounter();
+    private static void counter(Counter counter) throws InterruptedException {
         var t1 = new Thread(() -> {
             for (int i = 0; i < 10000; i++) {
                 counter.increment();
@@ -22,10 +27,10 @@ public class ConsoleThreads {
         t2.start();
         t1.join();
         t2.join();
-        System.out.println("Current thread: " + counter.getValue());
+        System.out.println("Current value: " + counter.getValue());
     }
 
-    private void characters() {
+    private static void characters() {
         var sync = new Object();
         AtomicInteger state = new AtomicInteger();
         var firstThread = new Thread(() -> {

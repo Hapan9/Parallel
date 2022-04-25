@@ -51,14 +51,12 @@ public class FoxWorker implements Runnable {
                 result[firstBlockRow * blockRank + i][secondBlockColumn * blockRank + j] += block[i][j];
             }
         }
-        print(result);
     }
 
     private static synchronized void print(int[][] matrix){
         System.out.println();
         for(int i =0; i < matrix.length; i ++){
             for (int j = 0; j < matrix[0].length; j++){
-                System.out.print(matrix[i][j] + " ");
             }
             System.out.println();
         }
