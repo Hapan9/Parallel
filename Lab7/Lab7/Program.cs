@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using Environment = MPI.Environment;
 
@@ -12,6 +11,7 @@ namespace Lab7
         private static void Main(string[] args)
         {
             OneToMany(args);
+            //ManyToMany(args);
         }
 
         private static void ManyToMany(string[] args)
@@ -38,7 +38,6 @@ namespace Lab7
                 var firstBlock = CreateMatrix(rowsPerNode, rank);
 
                 if (comm.Rank == Master)
-                {
                     if (stopwatch != null)
                     {
                         stopwatch.Stop();
@@ -46,13 +45,12 @@ namespace Lab7
                         Console.WriteLine("Initialization time elapsed - " + initializationTime);
                         stopwatch.Restart();
                     }
-                }
 
                 var second = comm.AllgatherFlattened(secondBlock, secondBlock.Length);
 
                 var resultBlock = Multiply(firstBlock, second);
 
-                comm.GatherFlattened(resultBlock, Master);
+                comm.Gather(resultBlock, Master);
 
                 if (comm.Rank != Master) return;
                 if (stopwatch == null) return;
@@ -97,7 +95,7 @@ namespace Lab7
 
                 var resultBlock = Multiply(block, second);
 
-                comm.GatherFlattened(resultBlock, Master);
+                comm.Gather(resultBlock, Master);
 
                 if (comm.Rank != Master) return;
                 if (stopwatch == null) return;
@@ -106,59 +104,6 @@ namespace Lab7
                 Console.WriteLine("Multiplication time elapsed - " + stopwatch.ElapsedMilliseconds);
                 Console.WriteLine("Time elapsed - " + (initializationTime + stopwatch.ElapsedMilliseconds));
             });
-        }
-
-        private static string[] Test(string[] args)
-        {
-            var args1 = args;
-            Environment.Run(ref args, comm =>
-            {
-                if (comm.Size < 2)
-                {
-                    throw new Exception("Need at least two MPI tasks. Quitting...");
-                }
-
-                if (comm.Rank == Master)
-                {
-                    var rank = Convert.ToInt32(args1[0]);
-                    var first = CreateMatrix(rank);
-                    var second = CreateMatrix(rank);
-                    int[][] result = null;
-
-                    comm.Scatter(first, Master);
-
-                    comm.Broadcast(ref second, Master);
-
-                    comm.Gather(new int[0], Master, ref result);
-                }
-                else
-                {
-                    var row = comm.Scatter(new int[0][], Master);
-
-                    if (row == null)
-                        Console.WriteLine($"Rank {comm.Rank}: First matrix rows not received");
-
-                    int[][] second = null;
-                    comm.Broadcast(ref second, Master);
-
-                    if (second == null)
-                        Console.WriteLine($"Rank {comm.Rank}: Second matrix not received");
-
-                    if (second != null)
-                        Console.WriteLine(
-                            $"Rank {comm.Rank}: {string.Join(", ", row ?? throw new InvalidOperationException())}; {second.Length}");
-                }
-            });
-            return args;
-        }
-
-        private static void PrintMatrix(int[][] matrix)
-        {
-            foreach (var elem in matrix)
-            {
-                for (var j = 0; j < matrix[0].Length; j++) Console.Write(elem[j] + " ");
-                Console.WriteLine();
-            }
         }
 
         private static int[][] CreateMatrix(int rank)
@@ -191,15 +136,6 @@ namespace Lab7
             var matrix = new int[rows][];
             for (var i = 0; i < rows; i++) matrix[i] = new int[columns];
             return matrix;
-        }
-
-        private static bool MatricesEqual(IReadOnlyList<int[]> expected, IReadOnlyList<int[]> actual)
-        {
-            for (var i = 0; i < expected.Count; i++)
-            for (var j = 0; j < expected[0].Length; j++)
-                if (expected[i][j] != actual[i][j])
-                    return false;
-            return true;
         }
 
         public static int[][] Multiply(int[][] first, int[][] second)
