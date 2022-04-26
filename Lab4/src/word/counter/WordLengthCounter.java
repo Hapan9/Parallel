@@ -9,15 +9,6 @@ import java.util.concurrent.*;
 public class WordLengthCounter {
     private final ForkJoinPool forkJoinPool = new ForkJoinPool();
 
-    public Hashtable<Integer, Integer> countWordsLengthInParallel(Document document) {
-        Hashtable<Integer, Integer> wordsLengths = new Hashtable<>();
-
-        for (String line : document.getLines()) {
-            forkJoinPool.invoke(new LineWordsCounterTask(wordsLengths, line));
-        }
-
-        return wordsLengths;
-    }
 
     public RandomVariableCharacteristics countWordsLengthInRealParallel(Document document) {
         var wordsLengths = forkJoinPool.invoke(new BlockWordsCounterTask(document.getLines().toArray(new String[0])));
@@ -41,9 +32,9 @@ public class WordLengthCounter {
         }
 
         int wordsSum = wordsLengths.values().stream().mapToInt(i -> i).sum();
-        final double mathExpected = wordsLengths.entrySet().stream() //sum((xi * ni) / N
+        final double mathExpected = wordsLengths.entrySet().stream()
                 .mapToDouble(i -> (double) i.getKey() * i.getValue()).sum() / wordsSum;
-        final double disperse = wordsLengths.entrySet().stream() // sum((xi - xm)^2 * ni) / N
+        final double disperse = wordsLengths.entrySet().stream()
                 .mapToDouble(i -> Math.pow((i.getKey() - mathExpected), 2) * i.getValue()).sum() / wordsSum;
 
         return new RandomVariableCharacteristics(wordsLengths, mathExpected, disperse, Math.sqrt(disperse));
@@ -159,23 +150,4 @@ public class WordLengthCounter {
     }
 
 
-    private class LineWordsCounterTask extends RecursiveAction {
-
-        private final String line;
-        private final Hashtable<Integer, Integer> wordsLengths;
-
-        public LineWordsCounterTask(Hashtable<Integer, Integer> wordsLengths,
-                                    String line) {
-            this.wordsLengths = wordsLengths;
-            this.line = line;
-        }
-
-        @Override
-        protected void compute() {
-            for (String word : Helper.wordsIn(line)){
-                Integer count = wordsLengths.getOrDefault(word.length(), 0);
-                wordsLengths.put(word.length(), ++count);
-            }
-        }
-    }
 }

@@ -74,41 +74,4 @@ public class FilesBrowser {
             return null;
         }
     }
-
-    class BlockSearchTask extends RecursiveTask<Boolean> {
-
-        private final int BLOCK_SIZE = 100;
-        private final String[] lines;
-        private final Set<String> searchWords;
-
-        public BlockSearchTask(String[] lines, Set<String> searchWords) {
-            this.lines = lines;
-            this.searchWords = searchWords;
-        }
-
-        @Override
-        protected Boolean compute() {
-            if (lines.length > BLOCK_SIZE){
-                String[] firstBlock = Arrays.copyOfRange(lines, 0, lines.length / 2);
-                String[] secondBlock = Arrays.copyOfRange(lines, lines.length / 2, lines.length);
-
-                var task1 = new BlockSearchTask(firstBlock, searchWords);
-                var task2 = new BlockSearchTask(secondBlock, searchWords);
-
-                task1.fork();
-                task2.fork();
-
-                return task1.join() || task2.join();
-            } else {
-                for (String line : lines) {
-                    for (String word : Helper.wordsIn(line)) {
-                        if (searchWords.contains(word)){
-                            return true;
-                        }
-                    }
-                }
-                return false;
-            }
-        }
-    }
 }
