@@ -12,12 +12,11 @@ namespace Lab6
         private const int FromMaster = 1;
         private const int FromWorker = 2;
         private const int Master = 0;
-        private const double Inline2000MultiplicationTime = 97878;
 
         private static void Main(string[] args)
         {
-            MultiProcessImmediateSample(args);
             MultiProcessSample(args);
+            //MultiProcessImmediateSample(args);
         }
 
         private static void MultiProcessSample(string[] args)
@@ -75,8 +74,7 @@ namespace Lab6
                     }
 
                     watch.Stop();
-                    Console.WriteLine("Time for parallel: " + watch.ElapsedMilliseconds);
-                    Console.WriteLine("Speedup: " + Inline2000MultiplicationTime / watch.ElapsedMilliseconds);
+                    Console.WriteLine("Time for single: " + watch.ElapsedMilliseconds);
                 }
                 else
                 {
@@ -155,7 +153,6 @@ namespace Lab6
 
                     watch.Stop();
                     Console.WriteLine("Time for parallel: " + watch.ElapsedMilliseconds);
-                    Console.WriteLine("Speedup: " + Inline2000MultiplicationTime / watch.ElapsedMilliseconds);
                 }
                 else
                 {
