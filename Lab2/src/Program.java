@@ -1,12 +1,12 @@
 public class Program {
 
     public static void main(String[] args) {
-        int[] workersTests = {2, 4, 8, 16, 32};
-        int[] sizeTests = { 100, 200, 20, 50 };
+        //int[] workersTests = {2, 4, 8, 16, 32, 64, 128, 256, 512, 1024};
+        int[] sizeTests = { 500, 1000, 1500};
 
-        //for (int i = 0; i < workersTests.length; i++) {
+        // for (int i = 0; i < workersTests.length; i++) {
         //    runWorkersTest(workersTests[i]);
-        //}
+        // }
 
         for (int i = 0; i < sizeTests.length; i++) {
             runSizeTest(sizeTests[i]);
@@ -15,14 +15,14 @@ public class Program {
 
     private static void runWorkersTest(int workersCount){
         System.out.println("Workers test: " + workersCount + " workers");
-        int[][] firstMatrix = createMatrix(100, 100);
-        int[][] secondMatrix = createMatrix(100, 100);
+        int[][] firstMatrix = createMatrix(500, 500);
+        int[][] secondMatrix = createMatrix(500, 500);
         TapeStrategy tape = new TapeStrategy(firstMatrix, secondMatrix, workersCount);
         FoxStrategy fox = new FoxStrategy(firstMatrix, secondMatrix, workersCount, 10);
 
         long start;
 
-        System.out.print("Fox method (100): ");
+        System.out.print("Fox method (500): ");
         start = System.currentTimeMillis();
         IterationsManager.iterate(fox);
         System.out.println(System.currentTimeMillis() - start);
@@ -40,8 +40,8 @@ public class Program {
         System.out.println("Size test: " + matrixRank + " matrix rank");
         int[][] firstMatrix = createMatrix(matrixRank, matrixRank);
         int[][] secondMatrix = createMatrix(matrixRank, matrixRank);
-        TapeStrategy tape = new TapeStrategy(firstMatrix, secondMatrix, 2);
-        FoxStrategy fox = new FoxStrategy(firstMatrix, secondMatrix, 2, 10);
+        TapeStrategy tape = new TapeStrategy(firstMatrix, secondMatrix, 4);
+        FoxStrategy fox = new FoxStrategy(firstMatrix, secondMatrix,4, 10);
 
         long start;
 

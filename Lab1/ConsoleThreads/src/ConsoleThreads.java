@@ -9,6 +9,7 @@ public class ConsoleThreads {
         //counter(new SimpleCounter());
         //counter(new AtomicIntCounter());
         characters();
+        //charactersSync();
     }
 
     private static void counter(Counter counter) throws InterruptedException {
@@ -30,7 +31,23 @@ public class ConsoleThreads {
         System.out.println("Current value: " + counter.getValue());
     }
 
-    private static void characters() {
+
+    private static void characters(){
+        var firstThread = new Thread(() -> {
+            while (true) {
+                System.out.print("-");
+            }
+        });
+        var secondThread = new Thread(() -> {
+            while (true) {
+                System.out.print("|");
+            }
+        });
+        firstThread.start();
+        secondThread.start();
+    }
+
+    private static void charactersSync() {
         var sync = new Object();
         AtomicInteger state = new AtomicInteger();
         var firstThread = new Thread(() -> {

@@ -30,7 +30,7 @@ public class BounceFrame extends JFrame {
         buttonBlue.addActionListener(e -> {
             int x = 0;
             int y = 30;
-            for (int i = 0; i < 10; i++) {
+            for (int i = 0; i < 1500; i++) {
                 var b = new Ball(canvas, Color.blue, x, y);
                 canvas.add(b);
                 var ballThread = new BallThread(b, canvas);
